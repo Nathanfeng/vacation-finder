@@ -1,11 +1,36 @@
 <%include partials/header %>
-<h1>These are the vacation spots</h1>
+  <nav class='navbar navbar-default'>
+    <div class ='container-fluid'>
+      <div class='nav'>
 
-<% vacationSpots.forEach((spot) => { %>
-  <div>
-    <h4> <%= spot.name %> </h4>
-    <img src= '<%= spot.image %>' >
-  </div>
-<% }) %>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <header class='jumbotron'>
+      <div class = 'container'>
+        <h1>Find Your Perfect Vacation Spot</h1>
+        <a class="btn btn-primary btn-large" href='/vacationSpots/new'>Add a New Vacation Spot</a>
+      </div>
+    </header>
 
-<%include partials/footer %>
+    <!-- <div class='col-lg-12'>
+      <h3>The most popular vacation sites</h3>
+    </div> -->
+    <div class='row text-center' style='display:flex; flex-wrap: wrap;'>
+      <% vacationSpots.forEach((spot) => { %>
+        <div class='col-md-3 col-sm-6'>
+          <div class='thumbnail'>
+            <img src= '<%= spot.image %>' >
+            <div class='caption'>
+              <h4> <%= spot.name %> </h4>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+
+
+
+  <%include partials/footer %>
+</div>
