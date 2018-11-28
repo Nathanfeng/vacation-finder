@@ -1,0 +1,20 @@
+<%include partials/header %>
+<div class="container">
+
+  <h1><%= spot.name %></h1>
+
+
+  <img src='<%=spot.image%>'>
+  <p>
+    <%= spot.description %>
+  </p>
+  <p>
+    $<%= spot.price %> /day
+  </p>
+
+  <div>
+    <a href='/vacationSpots'>back to all vacation spots</a>
+  </div>
+
+  <%include partials/footer %>
+</div>

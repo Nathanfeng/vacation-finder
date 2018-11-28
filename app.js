@@ -1,34 +1,76 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/vacation_finder');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs')
 
-var vacationSpots = [
-  {name: "First", image: "https://images.pexels.com/photos/6534/holiday-vacation-hotel-luxury.jpg?auto=compress&cs=tinysrgb&h=350"},
-  {name: 'Second', image: 'https://images.pexels.com/photos/1024992/pexels-photo-1024992.jpeg?auto=compress&cs=tinysrgb&h=350'},
-  {name:'Third', image: 'https://images.pexels.com/photos/733853/pexels-photo-733853.jpeg?auto=compress&cs=tinysrgb&h=350'},
-  {name:'Fourth', image: 'https://images.pexels.com/photos/60217/pexels-photo-60217.jpeg?auto=compress&cs=tinysrgb&h=350'}
-];
+//Schema setup
+
+var vacationSchema = new mongoose.Schema({
+  name: String,
+  image: String,
+  description: String,
+  price: Number
+});
+
+var vacation = mongoose.model("vacation", vacationSchema);
+
+
 
 app.get('/', (req, res) => {
   res.render('landing');
 })
 
 app.get('/vacationSpots', (req, res) =>{
-  res.render('vacationSpots', {vacationSpots: vacationSpots});
+  vacation.find({}, function(err, vacationSpots){
+    if(err){
+      console.log(err);
+    } else{
+      res.render('vacationSpots', {vacationSpots: vacationSpots});
+    }
+  })
 })
 
 app.get('/vacationSpots/new', (req, res) => {
   res.render('new.ejs');
 })
 
+app.get('/vacationSpots/:id', (req, res) => {
+  vacation.findById(req.params.id, function(err, foundVacationSpot){
+    if(err){
+      console.log(err);
+    }else{
+      console.log(foundVacationSpot);
+      res.render('show', {spot: foundVacationSpot})
+    }
+  })
+
+
+
+})
+
 app.post('/vacationSpots', (req, res) => {
   let newSpot = req.body.name;
   let newSpotPicture = req.body.image;
-  vacationSpots.push({name: newSpot, image: newSpotPicture});
-  res.redirect('/vacationSpots');
+  let description = req.body.description;
+  let price = req.body.price;
+  vacation.create({
+    name: newSpot,
+    image: newSpotPicture,
+    description: description,
+    price: price
+  }, function(err, spot){
+      if(err){
+        console.log(err);
+      } else{
+        console.log(spot, 'was created')
+        res.redirect('/vacationSpots');
+      }
+  })
 })
 
 app.listen(3000, () => {
