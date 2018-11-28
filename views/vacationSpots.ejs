@@ -1,0 +1,11 @@
+<%include partials/header %>
+<h1>These are the vacation spots</h1>
+
+<% vacationSpots.forEach((spot) => { %>
+  <div>
+    <h4> <%= spot.name %> </h4>
+    <img src= '<%= spot.image %>' >
+  </div>
+<% }) %>
+
+<%include partials/footer %>
